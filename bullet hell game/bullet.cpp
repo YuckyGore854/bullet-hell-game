@@ -1,4 +1,5 @@
 #include "bullet.h"
+#include<iostream>
 
 bullet::bullet() {
 	xpos = 0;
@@ -40,11 +41,11 @@ void bullet::move2() {
 
 void bullet::move3() {
 	radius = 14;
-	angle -= 0.2;
+	angle -= 0.1;
 	if (angle < -6.28)
 		angle = 0;
-	xpos = ypos + sin(angle) * (radius) / 2;
-	ypos = xpos + cos(angle) * (radius) / 2 - 1;
+	xpos = xpos + sin(angle) * (radius) / 2;
+	ypos = ypos + cos(angle) * (radius) / 2 - 1;
 }
 
 bool bullet::offScreen() {
@@ -54,13 +55,12 @@ bool bullet::offScreen() {
 }
 
 void bullet::draw(sf::RenderWindow& window) {
-	sf::CircleShape shape(5);
+	sf::CircleShape shape(10);
 	shape.setFillColor(sf::Color(100, 250, 50));
-
-	if (alive) {
+	//if (isALive()) {
 		shape.setPosition(xpos, ypos);
 		window.draw(shape);
-	}
+	//}
 }
 
 bool bullet::isALive() {

@@ -141,24 +141,31 @@ int main() {
             if ((*iter2)->offScreen())//if we move above the edge of the screen
                 (*iter2)->kill();//set as dead
         }
-
+        for (bulletIter = bullets.begin(); bulletIter != bullets.end(); bulletIter++) {
+            if ((*bulletIter)->offScreen() && bullets.size() > 0) {
+                (*bulletIter)->~bullet(); // call the destructor (destroys the obejct, releases memory)
+                bulletIter = bullets.erase(bulletIter); //take it out of the vector too
+            }
+        }
         counter++; //variable to slow down object creating. initialize it to 0 above your gameloop
         minBullets -= 0.001; //variable initialized to 60. Subtracting here speeds up object creation over time
-        if (counter > minBullets) {
+       if (counter > minBullets) {
             //create new bullets, push into vector
-            bullet* newBullet = new bullet(500, 100, 0);
+            bullet* newBullet = new bullet(500, 0, 0);
             bullets.push_back(newBullet);
-            bullet* newBullet2 = new bullet(500, 100, 3.14);
+            bullet* newBullet2 = new bullet(500, 0, 3.14);
             bullets.push_back(newBullet2);
-            bullet* newBullet3 = new bullet(500, 100, 3.14 / 2);
+            bullet* newBullet3 = new bullet(500, 0, 3.14 / 2);
             bullets.push_back(newBullet3);
-            bullet* newBullet4 = new bullet(500, 100, 3 * 3.14 / 2);
+            bullet* newBullet4 = new bullet(500, 0, 3 * 3.14 / 2);
             bullets.push_back(newBullet4);
 
             counter = 0;
         }
+            
+            cout << bullets.size() << endl;
         //move the bullets
-        moveTimer += 2; //movetimer slwos down MOVEMENT
+        moveTimer += 2; //movetimer slows down MOVEMENT
         if (moveTimer > 2400)
             moveTimer = 0;
 
@@ -176,20 +183,7 @@ int main() {
                 (*bulletIter)->move3();
                 
             }
-        }
-
-        for (bulletIter = bullets.begin(); bulletIter != bullets.end(); bulletIter++) {
-            if ((*bulletIter)->offScreen()) {
-                (*bulletIter)->~bullet(); // call the destructor (destroys the obejct, releases memory)
-                bulletIter = bullets.erase(bulletIter); //take it out of the vector too
-            }
-        }
-        for (bulletIter = bullets.begin(); bulletIter != bullets.end(); bulletIter++) {
-            
-                (*bulletIter)->draw(screen);
-            
-        }
-
+        }    
         //render section-----------------------------------------
         screen.clear(); //wipes screen, without this things smear
 
@@ -216,6 +210,12 @@ int main() {
             if ((*iter2)->isALive())//only move live missiles
                 (*iter2)->draw(screen);
         }
+        for (bulletIter = bullets.begin(); bulletIter != bullets.end(); bulletIter++) {
+
+            (*bulletIter)->draw(screen);
+
+        }
+        
         screen.display(); //flips memory drawings onto screen
 
     }//######################## end game loop ###################################################################################
