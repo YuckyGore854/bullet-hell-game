@@ -141,10 +141,15 @@ int main() {
             if ((*iter2)->offScreen())//if we move above the edge of the screen
                 (*iter2)->kill();//set as dead
         }
-        for (bulletIter = bullets.begin(); bulletIter != bullets.end(); bulletIter++) {
+        for (bulletIter = bullets.begin(); bulletIter != bullets.end(); ) {
             if ((*bulletIter)->offScreen() && bullets.size() > 0) {
                 (*bulletIter)->~bullet(); // call the destructor (destroys the obejct, releases memory)
+                delete* bulletIter;
                 bulletIter = bullets.erase(bulletIter); //take it out of the vector too
+                
+            }
+            else {
+                ++bulletIter;
             }
         }
         counter++; //variable to slow down object creating. initialize it to 0 above your gameloop
