@@ -4,6 +4,8 @@
 
 #include<iostream>
 #include<vector>
+#include<ctime>
+#include"stars.h"
 #include"missile.h"
 #include"bullet.h"
 #include "SFML/Graphics.hpp"
@@ -13,6 +15,8 @@ using namespace std;
 //enum DIRECTIONS { LEFT, RIGHT, UP, DOWN }; //left is 0, right is 1, up is 2, down is 3
 
 int main() {
+    srand(time(NULL));
+    
     //game set up (you'll need these lines in every game)
     sf::RenderWindow screen(sf::VideoMode(SCREEN_W, SCREEN_H), "Bullet Hell"); //set up screen
     sf::Event event; //set up event queue
@@ -60,6 +64,11 @@ int main() {
     for (int i = 0; i < 5; i++) {
         missile* newMissile = new missile(xpos, ypos, MissilePic); //dynamically instantiates 5 missiles
         missiles.push_back(newMissile); //pushes a new missile into vector
+    }
+    vector<stars*> star;
+    vector<stars*>::iterator starIter;
+    for (int i = 0; i < 50; i++) {
+        star.push_back(new stars());
     }
 
     //################### HOLD ONTO YOUR BUTTS, ITS THE GAME LOOP###############################################################
@@ -168,14 +177,14 @@ int main() {
             counter = 0;
         }
             
-            cout << bullets.size() << endl;
+            //cout << bullets.size() << endl;
         //move the bullets
         moveTimer += 2; //movetimer slows down MOVEMENT
         if (moveTimer > 2400)
             moveTimer = 0;
 
         for (bulletIter = bullets.begin(); bulletIter != bullets.end(); bulletIter++) {
-            if (moveTimer < 600) {
+            if (moveTimer < 500) {
                 (*bulletIter)->move();
             }
             else if (moveTimer < 1200) {
@@ -188,7 +197,11 @@ int main() {
                 (*bulletIter)->move3();
                 
             }
-        }    
+        }
+        for (starIter = star.begin(); starIter != star.end(); starIter++) {
+            (*starIter)->move();
+            (*starIter)->reposition();
+        }
         //render section-----------------------------------------
         screen.clear(); //wipes screen, without this things smear
 
@@ -216,9 +229,10 @@ int main() {
                 (*iter2)->draw(screen);
         }
         for (bulletIter = bullets.begin(); bulletIter != bullets.end(); bulletIter++) {
-
             (*bulletIter)->draw(screen);
-
+        }
+        for (starIter = star.begin(); starIter != star.end(); starIter++) {
+            (*starIter)->draw(screen);
         }
         
         screen.display(); //flips memory drawings onto screen
