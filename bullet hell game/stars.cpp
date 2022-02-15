@@ -8,8 +8,9 @@ stars::stars() {
 	size = rand() % 2 + 1;
 }
 
-void stars::move() {
+void stars::move(int x, int y) {
 	ypos += 5;
+
 }
 
 void stars::reposition() {

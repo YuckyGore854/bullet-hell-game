@@ -199,7 +199,7 @@ int main() {
             }
         }
         for (starIter = star.begin(); starIter != star.end(); starIter++) {
-            (*starIter)->move();
+            (*starIter)->move(xpos, ypos);
             (*starIter)->reposition();
         }
         //render section-----------------------------------------

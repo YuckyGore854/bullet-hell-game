@@ -12,7 +12,7 @@ private:
 public:
 	stars();
 	~stars(){ }
-	void move();
+	void move(int x, int y);
 	void reposition();
 	void draw(sf::RenderWindow& window);
 };
